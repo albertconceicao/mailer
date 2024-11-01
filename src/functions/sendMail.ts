@@ -1,9 +1,11 @@
 import { SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { sesClient } from '../clients/sesClient';
 
-export async function handler() {
+export async function handler(req: Request) {
+  const body = await req.json();
+  const { emailToSend } = body;
   const mime = `From: contato@sandycarvalho.com.br
-To: albertconceicao2@gmail.com
+To: ${emailToSend}
 Reply-To: contato@sandycarvalho.com.br
 Subject: Você foi cadastrado na clínica virtual da Psicóloga Sandy Carvalho
 MIME-Version: 1.0

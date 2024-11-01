@@ -56,3 +56,10 @@ functions:
       - httpApi:
           path: /sendAttachedMailWithNodeMailer
           method: post
+
+  sendDynamicAttachedMailWithNodeMailer:
+    handler: src/functions/simplifiedDynamicFileSendMail.handler
+    events:
+      - httpApi:
+          path: /sendDynamicAttachedMailWithNodeMailer
+          method: post

@@ -1,0 +1,58 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: developeralbert
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: mailer
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  architecture: arm64
+  region: sa-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+            - ses:SendRawEmail
+          Resource: '*'
+        - Effect: Allow
+          Action: s3:GetObject
+          Resource: arn:aws:s3:::s3-albert-test/uploads/*
+
+build:
+  esbuild:
+    minify: true
+    bundle: true
+    sourcemap: false
+    exclude:
+      - '@aws-sdk/*'
+
+functions:
+  sendMail:
+    handler: src/functions/sendMail.handler
+    events:
+      - httpApi:
+          path: /send
+          method: post
+
+  sendAttachedMail:
+    handler: src/functions/sendMailWithAttachment.handler
+    events:
+      - httpApi:
+          path: /sendMailWithAttachment
+          method: post
+
+  sendAttachedMailWithS3File:
+    handler: src/functions/sendMailWithAttachmentFromS3.handler
+    events:
+      - httpApi:
+          path: /sendMailWithAttachmentFromS3
+          method: post
+
+  sendAttachedMailWithNodeMailer:
+    handler: src/functions/simplifiedSendMail.handler
+    events:
+      - httpApi:
+          path: /sendAttachedMailWithNodeMailer
+          method: post

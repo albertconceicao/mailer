@@ -29,7 +29,6 @@ export async function handler(event:any) {
       {
         filename: file.filename,
         content: fileContent,
-        contentType: 'application/pdf',
       }
     ]
   });
